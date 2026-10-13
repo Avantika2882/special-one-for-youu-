@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
+  <title>A Letter For Ckayyyy 💌</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Lora:ital,wght@0,400;0,500;1,400&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ivory: '#F7F2E7',
+            aged: '#EADBCE',
+            beige: '#D8C3A8',
+            rose: '#C99A98',
+            burgundy: '#783F46',
+            brown: '#6B5443',
+            ink: '#382F2A',
+            sage: '#A5AA91',
+          },
+          fontFamily: {
+            serif: ['Lora', 'serif'],
+            display: ['Playfair Display', 'serif'],
+            cormorant: ['Cormorant Garamond', 'serif'],
+            script: ['Caveat', 'cursive'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    * {
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      box-sizing: border-box;
+    }
+    body {
+      background-color: #2D231E;
+      background-image: 
+        radial-gradient(rgba(216, 195, 168, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, #241B17 0%, #352A24 100%);
+      background-size: 24px 24px, 100% 100%;
+      color: #382F2A;
+      overflow-x: hidden;
+    }
+    .greeting-card-frame {
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1), 0 10px 28px rgba(0,0,0,0.38), 0 0 0 1px rgba(216, 195, 168, 0.4);
+      height: auto !important;
+      min-height: 0 !important;
+      display: flow-root;
+    }
+    .card-page {
+      display: none !important;
+      opacity: 0 !important;
+      height: 0 !important;
+      min-height: 0 !important;
+      overflow: hidden !important;
+      margin: 0 !important;
+      padding: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+    .card-page.active-page {
+      display: block !important;
+      opacity: 1 !important;
+      height: auto !important;
+      min-height: 0 !important;
+      overflow: visible !important;
+      visibility: visible !important;
+      pointer-events: auto !important;
+      animation: pageFadeIn 0.22s ease-out forwards;
+    }
+    @keyframes pageFadeIn {
+      from { opacity: 0; transform: translateY(3px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+    .shake-anim { animation: shake 0.4s ease-in-out; }
+    .card-perspective { perspective: 1000px; -webkit-perspective: 1000px; }
+    .flip-inner {
+      position: relative;
+      width: 100%;
+      min-height: 120px;
+      transition: transform 0.6s cubic-bezier(0.34, 1.25, 0.64, 1);
+      transform-style: preserve-3d;
+      -webkit-transform-style: preserve-3d;
+      cursor: pointer;
+      will-change: transform;
+    }
+    @media (min-width: 640px) { .flip-inner { min-height: 130px; } }
+    .flip-inner.is-flipped { transform: rotateY(180deg); -webkit-transform: rotateY(180deg); }
+    .flip-front, .flip-back {
+      position: absolute;
+      inset: 0;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: 0.5rem;
+      transform: translate3d(0, 0, 0);
+    }
+    .flip-back { transform: rotateY(180deg) translate3d(0, 0, 0); -webkit-transform: rotateY(180deg) translate3d(0, 0, 0); }
+    @keyframes blinkCursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+    .cursor-blink { animation: blinkCursor 0.85s infinite; }
+  </style>
+</head>
+<body class="font-serif selection:bg-rose selection:text-ink min-h-screen flex flex-col items-center justify-center py-2 px-2 sm:px-4">
+
+  <!-- Sparkles Canvas -->
+  <canvas id="sparkleCanvas" class="fixed inset-0 pointer-events-none z-50 w-full h-full"></canvas>
+
+  <!-- ====================================================================
+       STAGE 1: THE SEALED VINTAGE ENVELOPE WITH PASSCODE LOCK
+       ==================================================================== -->
+  <div id="openingScreen" class="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 bg-[#241B17] transition-all duration-700">
+    <div id="envelopeStage" class="max-w-md w-full text-center flex flex-col items-center transition-all duration-500">
+      <div class="mb-2">
+        <span class="text-xs uppercase tracking-[0.3em] font-sans text-rose font-semibold">
+          SPECIAL DELIVERY • PRIVATE
+        </span>
+        <h2 class="text-2xl sm:text-3xl text-ivory font-normal italic mt-0.5 font-cormorant">
+          A card for someone dear to me.
+        </h2>
+      </div>
+
+      <!-- Tactile Envelope Card -->
+      <div id="envelopeCard" onclick="focusPasscode()" class="group relative w-72 sm:w-80 h-44 sm:h-48 bg-aged rounded-md shadow-2xl border border-beige cursor-pointer my-3 transition-all duration-700 transform hover:-translate-y-1 active:scale-95">
+        <div class="absolute inset-0 rounded-md overflow-hidden" style="background: linear-gradient(135deg, #EADBCE 0%, #D8C3A8 50%, #EADBCE 100%)">
+          <div id="envelopeFlap" class="absolute top-0 left-0 right-0 h-24 sm:h-28 bg-[#DFD1B9] border-b border-[#C8B395] transition-transform duration-700 origin-top shadow-sm" style="clip-path: polygon(0 0, 100% 0, 50% 100%);"></div>
+
+          <!-- Postage Stamp -->
+          <div class="absolute top-2.5 right-3.5 transform rotate-3">
+            <div class="p-0.5 bg-ivory border border-beige shadow-sm rounded-sm">
+              <div class="w-11 h-13 border-2 border-dashed border-burgundy p-0.5 flex flex-col justify-between items-center text-center">
+                <span class="text-[6px] uppercase tracking-widest text-brown">SPECIAL</span>
+                <span class="text-xs text-burgundy">🌸</span>
+                <span class="text-[6px] tracking-wider uppercase font-bold text-ink">AIR MAIL</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Recipient Name -->
+          <div class="absolute bottom-3 left-4 text-left">
+            <p class="text-[8px] font-sans tracking-widest text-brown uppercase">FOR:</p>
+            <p id="openFriendName" class="text-xl sm:text-2xl text-ink font-bold tracking-wide font-script"></p>
+            <p id="openPostalOrigin" class="text-[8px] text-brown italic"></p>
+          </div>
+
+          <!-- Center Wax Seal Button -->
+          <div id="openWaxSeal" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 transition-transform duration-500">
+            <svg width="60" height="60" viewBox="0 0 100 100" class="drop-shadow-lg">
+              <defs>
+                <radialGradient id="waxGradMain" cx="35%" cy="35%" r="65%">
+                  <stop offset="0%" stop-color="#FFF" stop-opacity="0.35"/>
+                  <stop offset="50%" stop-color="#783F46"/>
+                  <stop offset="100%" stop-color="#251214" stop-opacity="0.85"/>
+                </radialGradient>
+              </defs>
+              <path d="M50 8 C62 7, 72 13, 80 20 C90 30, 94 42, 92 56 C90 70, 80 82, 68 89 C55 96, 40 94, 28 88 C16 82, 8 70, 8 55 C7 40, 15 26, 26 17 C34 11, 42 8, 50 8 Z" fill="url(#waxGradMain)"/>
+              <circle cx="50" cy="52" r="26" fill="none" stroke="#F6F0E4" stroke-opacity="0.45" stroke-width="2" stroke-dasharray="4 2"/>
+              <text x="50" y="58" text-anchor="middle" fill="#F6F0E4" font-size="20" font-family="serif" font-weight="bold">♥</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Secret Passcode Box -->
+      <div id="lockBox" class="flex flex-col items-center max-w-xs w-full mt-1">
+        <div class="relative flex items-center justify-center w-full">
+          <input 
+            type="password" 
+            id="passcodeInput" 
+            maxlength="4" 
+            inputmode="numeric" 
+            pattern="[0-9]*"
+            placeholder="• • • •"
+            class="w-36 text-center tracking-[0.45em] text-lg font-bold py-1.5 px-3 rounded-full bg-[#342720] border-2 border-beige text-ivory placeholder-beige/40 focus:outline-none focus:border-rose transition-all shadow-inner"
+          />
+        </div>
+
+        <!-- Wrong code alert -->
+        <p id="passcodeError" class="hidden text-xs text-rose font-sans font-semibold mt-1">
+          Do not open the letter, it's not for you! 🚫
+        </p>
+
+        <!-- Pretty Success Message when he enters correct passcode -->
+        <p id="passcodeSuccess" class="hidden text-xs text-[#F6D07A] font-sans font-semibold mt-1 animate-pulse">
+          ✨ Unlocked with love! Opening just for you, my love... 💗
+        </p>
+
+        <!-- Hint with laughing and heart emoji -->
+        <p class="text-[11px] text-beige/90 italic font-serif mt-1.5 text-center leading-tight">
+          💡 <span class="text-rose font-semibold not-italic">Hint:</span> "I remember the date" 😂💗
+        </p>
+
+        <button onclick="checkPasscodeAndOpen()" class="mt-2.5 px-7 py-2 bg-burgundy hover:bg-[#623238] text-ivory rounded-full text-xs font-sans font-semibold tracking-[0.2em] uppercase shadow-lg transition-all transform active:scale-95 border border-[#8C4F57] flex items-center gap-1.5">
+          <span>UNSEAL & OPEN</span> 💌
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       STAGE 2: SNUG EXACT-FITTING GREETING CARD (NO DEAD SPACE)
+       ==================================================================== -->
+  <main class="w-full max-w-[95vw] sm:max-w-xl md:max-w-2xl mx-auto my-auto py-1">
+
+    <div id="greetingCardBox" class="greeting-card-frame relative bg-ivory rounded-xl border-2 border-beige p-3.5 sm:p-5 transition-all">
+      <div class="hidden sm:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[1px] bg-gradient-to-b from-transparent via-beige/70 to-transparent pointer-events-none"></div>
+      <div class="absolute inset-1.5 sm:inset-2 border border-[#E2D2BC] rounded-lg pointer-events-none"></div>
+
+      <!-- PAGE 1: COVER -->
+      <div id="page-1" class="card-page active-page text-center py-1">
+        <div class="inline-flex items-center gap-1.5 select-none opacity-70 transform -rotate-3 mb-1">
+          <div class="w-8 h-8 rounded-full border border-dashed border-burgundy flex flex-col items-center justify-center text-[6px] font-serif text-burgundy">
+            <span class="font-bold">PAR AVION</span>
+            <span id="coverDate" class="text-[5px]"></span>
+          </div>
+          <div class="flex flex-col gap-0.5 w-6">
+            <div class="h-0.5 bg-burgundy rounded-full opacity-60"></div>
+            <div class="h-0.5 bg-burgundy rounded-full opacity-40"></div>
+          </div>
+        </div>
+
+        <h1 id="coverHeading" class="text-xl sm:text-2xl text-ink font-normal tracking-tight leading-snug mb-1.5 font-display"></h1>
+
+        <div class="flex items-center justify-center gap-2 my-1 opacity-75">
+          <div class="h-[1px] w-8 sm:w-12 bg-gradient-to-r from-transparent to-brown"></div>
+          <span class="text-burgundy text-xs">❧ ❦ ❧</span>
+          <div class="h-[1px] w-8 sm:w-12 bg-gradient-to-l from-transparent to-brown"></div>
+        </div>
+
+        <p id="coverSubtitle" class="text-xs sm:text-sm text-brown max-w-sm mx-auto leading-relaxed italic mb-3 font-serif"></p>
+
+        <div class="inline-block p-1.5 px-4 bg-aged/70 rounded-md border border-beige transform -rotate-1 shadow-sm mb-3">
+          <p id="coverNote" class="text-base sm:text-lg text-burgundy font-script"></p>
+        </div>
+
+        <div>
+          <button onclick="goToPage(2)" class="px-6 py-2.5 bg-burgundy hover:bg-[#623238] text-ivory rounded-full text-xs font-sans tracking-[0.2em] uppercase font-semibold shadow-md transition-all transform active:scale-95 inline-flex items-center gap-1.5">
+            OPEN CARD & READ ➔
+          </button>
+        </div>
+      </div>
+
+      <!-- PAGE 2: THE HANDWRITTEN LETTER -->
+      <div id="page-2" class="card-page py-0.5">
+        <div class="flex items-center justify-between border-b border-beige/60 pb-1 mb-2.5">
+          <span id="letterPostal" class="text-[9px] sm:text-[10px] text-brown uppercase tracking-widest font-sans"></span>
+          <span class="text-xs text-burgundy font-serif font-bold">♥ № 1</span>
+        </div>
+
+        <h2 id="letterTitle" class="text-lg sm:text-xl text-burgundy font-normal tracking-wide mb-2.5 font-display"></h2>
+
+        <div id="typewriterBody" class="space-y-2.5 text-ink leading-relaxed text-[13.5px] sm:text-[14.5px] font-serif" style="line-height: 1.75;"></div>
+
+        <div id="letterPostscriptContainer" class="mt-3 pt-2 border-t border-beige/70 opacity-0 transition-opacity duration-700"></div>
+
+        <div id="letterSignoffContainer" class="mt-2.5 pt-0.5 flex flex-col items-end text-right opacity-0 transition-opacity duration-700">
+          <span id="letterSignOff" class="text-[10px] font-sans tracking-wider text-brown uppercase"></span>
+          <p id="letterSender" class="text-2xl sm:text-3xl text-burgundy font-bold mt-0.5 tracking-wide font-script"></p>
+        </div>
+      </div>
+
+      <!-- PAGE 3: PIECES OF OUR LITTLE WORLD -->
+      <div id="page-3" class="card-page py-0.5">
+        <div class="text-center mb-2.5">
+          <h2 class="text-lg sm:text-xl text-ink font-serif">Pieces of Our Little World</h2>
+          <p class="text-[10px] text-brown italic mt-0.5">Keepsake notes and stories written in gold.</p>
+        </div>
+        <div id="memoryGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5"></div>
+      </div>
+
+      <!-- PAGE 4: REASONS WHY -->
+      <div id="page-4" class="card-page py-0.5">
+        <div class="text-center mb-2">
+          <h2 class="text-lg sm:text-xl text-ink font-serif">If You Ever Wonder Why You Matter</h2>
+          <p class="text-[10px] text-brown italic mt-0.5">Tap each card to flip and unveil the note.</p>
+        </div>
+        <div id="appreciationGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+      </div>
+
+      <!-- PAGE 5: THE FINAL MESSAGE -->
+      <div id="page-5" class="card-page py-1 text-center">
+        <div class="flex items-center justify-center gap-2 mb-2 opacity-75">
+          <div class="h-[1px] w-8 sm:w-12 bg-gradient-to-r from-transparent to-brown"></div>
+          <span class="text-burgundy text-xs">✦ ❦ ✦</span>
+          <div class="h-[1px] w-8 sm:w-12 bg-gradient-to-l from-transparent to-brown"></div>
+        </div>
+
+        <h2 id="finalTitle1" class="text-lg sm:text-xl text-ink font-serif tracking-tight"></h2>
+        <p id="finalTitle2" class="text-base sm:text-lg text-burgundy italic font-serif mt-0.5 font-normal"></p>
+
+        <div id="finalParagraphsContainer" class="my-2.5 space-y-2 text-xs sm:text-sm text-ink leading-relaxed max-w-lg mx-auto font-serif" style="line-height: 1.7;"></div>
+
+        <div class="flex items-center justify-center gap-2 my-2 opacity-75">
+          <div class="h-[1px] w-8 sm:w-12 bg-gradient-to-r from-transparent to-brown"></div>
+          <span class="text-burgundy text-xs">✦ ❦ ✦</span>
+          <div class="h-[1px] w-8 sm:w-12 bg-gradient-to-l from-transparent to-brown"></div>
+        </div>
+
+        <div class="mt-2 flex flex-col items-center">
+          <span id="finalSignOff" class="text-[9px] font-sans tracking-widest text-brown uppercase"></span>
+          <p id="finalSender" class="text-2xl sm:text-3xl text-burgundy font-bold mt-0.5 font-script"></p>
+        </div>
+
+        <div class="mt-3.5 mb-0.5">
+          <button onclick="goToPage(1)" class="px-4 py-1.5 bg-[#FAF5EC] hover:bg-aged text-brown border border-beige rounded-full text-[11px] font-sans tracking-[0.2em] uppercase font-semibold transition-all transform active:scale-95 inline-flex items-center gap-1.5">
+            ↑ RETURN TO COVER
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- NAVIGATION RIBBON -->
+    <div class="mt-2 flex items-center justify-between px-1 text-xs font-sans text-rose select-none">
+      <button id="prevBtn" onclick="prevPage()" class="opacity-0 pointer-events-none px-3 py-1 rounded-full bg-[#3B2E27] hover:bg-[#4D3D34] text-ivory tracking-widest uppercase transition-all flex items-center gap-1 active:scale-95 text-[10px]">
+        ↶ PREVIOUS
+      </button>
+
+      <div id="pageDots" class="flex items-center gap-1 text-beige"></div>
+
+      <button id="nextBtn" onclick="nextPage()" class="px-3 py-1 rounded-full bg-burgundy hover:bg-[#623238] text-ivory tracking-widest uppercase font-semibold transition-all flex items-center gap-1 active:scale-95 shadow-md text-[10px]">
+        NEXT PAGE ➔
+      </button>
+    </div>
+  </main>
+
+  <!-- ====================================================================
+       JAVASCRIPT & PERSONALIZATION CENTER
+       ==================================================================== -->
+  <script>
+    const BIRTHDAY_DATA = {
+      friendName: "Ckayyyy 💗",
+      friendNickname: "My Dearest Lovee",
+      senderName: "Your Wifeyyy 😺",
+      birthdayDate: "October 24th",
+      postalOrigin: "Sent with all my love • Air Mail",
+
+      cover: {
+        mainHeading: "HAPPIEST BIRTHDAY, MY FAVOURITE HUMAN",
+        subtitle: "If I could put all my love for you into words, this little card still wouldn't be enough.",
+        note: "Written with love, just for you."
+      },
+
+      letter: {
+        heading: "MY BESTESTESTEST FRIEND,",
+        paragraphs: [
+          "Happy Birthday to the one who makes this world feel infinitely warmer and kinder. All the unplanned late night talks , secret texting and calls which we had everyyy single thing is sooo specialll ✨️✨️✨️.",
+          "I couldn't be with youuu on your birthday, so I wanted to do something that actually makes you happyyy and something which you never expect that I would dooo!!! So I took this small effort for youuu &lt;333 Everyyy single moment that we share is tooo special that i couldn't stop thinking about thosee... The way you describe me , admire me, support me, comfort me... every single thing just makes me blushhhh 🥰🥰 I know that I am not good at comforting you when you are sad or talk for you when a problem comes... it isn't that I don't care about you... its just I don't know exactly how to react at the moment but in my heart I always care about you and always wish all the best things happen to youuu🍀 Youuu knoww what still makes me happyyy... Even if I am not that gooodd youuuu always choseee me and never gave up on meee 🥹🥹",
+          "Thank you for being my constant, for listening without judgment, for celebrating every little victory with me, and for standing beside me during the hard days. Life is so much better with a person like youuu in itttt 🤗🤗.",
+          "Mayyy this year brings all the happiness you wished for and get rid of all yourr sorrows and pain🧿💫... Even when life gets hard... Remember youuu always have your beautiful wifeee with youuu 😉✨️"
+        ],
+        postscript: "P.S. I hope today treats you like the royalty you are.",
+        signOff: "With all my love,"
+      },
+
+      memories: [
+        {
+          tag: "CHERISHED MOMENT",
+          title: "A memory I will always cherish",
+          date: "The late night conversation",
+          story: "The day when I completely felt safe around you and shared every insecure moment to you and never felt judged...Will never forget that day!!!",
+          sticker: "Pressed memories"
+        },
+        {
+          tag: "ENDLESS LAUGHTER",
+          title: "Our funniest moments",
+          date: "Those unforgettable moments",
+          story: "We equallyy have fun and fights ofcoursee...The most funny for me na when we talk about our past 💀💀 Athana serupadiii...",
+          sticker: "100% ridiculous"
+        },
+        {
+          tag: "SECRET DICTIONARY",
+          title: "Something only we understand",
+          date: "Every single day",
+          story: "Namma neriyaa sandaa potrukoo... neriyaa vaartha vitruko but only we both know it is not from our heart and is purely out of lovee and caree we have for eachother... ",
+          sticker: "Top secret"
+        },
+        {
+          tag: "GRATITUDE",
+          title: "A moment that made me grateful for you",
+          date: "When I needed someone most",
+          story: "Ennoda behavior naalaa I always end up losing friends... adhunalaiye I decided to be alone for other's good... but eppomee evaloo peruu ponaluuu you stayed no matter whatt... ",
+          sticker: "Pure gold"
+        }
+      ],
+
+      appreciation: [
+        {
+          title: "YOUR KINDNESS",
+          icon: "🕊️",
+          text: "I love the way you are kind to me because it's my premium subscription😜 and nobody gets to use thattt ."
+        },
+        {
+          title: "YOUR LITTLE HABITS",
+          icon: "☕",
+          text: "The way care for me🫂✨️... It's just tooo special and Wishh you stayyy the samee with me likeee thattt... "
+        },
+        {
+          title: "THE WAY YOU MAKE ME LAUGH",
+          icon: "☀️",
+          text: "Whenever there's an inconvenience in my life either friends naalaiyo illaa family naalaiyo... You willl console me and always make me laugh in the endd... That's why I always run to youu!!!✨️✨️"
+        },
+        {
+          title: "SIMPLY BEING YOU",
+          icon: "✨",
+          text: "You are just as great as you are now🙂‍↕️🙂‍↕️ Yaaruuu sonnadhu illanaa kooda naaa solree... Youuu aree the cutesttt guy which I mettt in my lifeee 🥰🥰"
+        }
+      ],
+
+      finalMessage: {
+        heading1: "IF I COULD CHOOSE MY BEST FRIEND ALL OVER AGAIN...",
+        heading2: "I WOULD STILL CHOOSE YOU. EVERY SINGLE TIME.",
+        paragraphs: [
+          "Let's cherish everyyy moment we share togetherrr and be there for eachotherrr ALWAYSSS!!! There is no leaving for both of us and we are going to choose us everytime 😌✨️✨️",
+          "Thank you for walking beside me through every chapter. Cheers to moreee memories unforgettable together... I just one to say one thing before finishing this... I LOVEEEE YOUUUU CKAAAYYYY 💞😽✨️",
+          "HAPPY BIRTHDAY, MY SWEET HEART <333."
+        ],
+        signOff: "Forever grateful for you,"
+      }
+    };
+
+    /* Passcode Lock (Updated to 0808) */
+    const SECRET_PASSCODE = "0808";
+
+    function focusPasscode() {
+      const input = document.getElementById('passcodeInput');
+      if (input) input.focus();
+    }
+
+    function checkPasscodeAndOpen() {
+      const input = document.getElementById('passcodeInput');
+      const errorMsg = document.getElementById('passcodeError');
+      const successMsg = document.getElementById('passcodeSuccess');
+      const lockBox = document.getElementById('lockBox');
+
+      if (!input) return;
+
+      if (input.value === SECRET_PASSCODE) {
+        errorMsg.classList.add('hidden');
+        if (successMsg) successMsg.classList.remove('hidden');
+        
+        setTimeout(() => {
+          openGreetingCardDirectly();
+        }, 900);
+      } else {
+        if (successMsg) successMsg.classList.add('hidden');
+        errorMsg.classList.remove('hidden');
+        lockBox.classList.remove('shake-anim');
+        void lockBox.offsetWidth;
+        lockBox.classList.add('shake-anim');
+        input.value = '';
+        input.focus();
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const input = document.getElementById('passcodeInput');
+      if (input) {
+        input.addEventListener('input', (e) => {
+          if (e.target.value.length === 4) {
+            checkPasscodeAndOpen();
+          }
+        });
+        input.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            checkPasscodeAndOpen();
+          }
+        });
+      }
+    });
+
+    /* Navigation */
+    let currentPage = 1;
+    const totalPages = 5;
+
+    function initGreetingCard() {
+      document.getElementById('openFriendName').textContent = BIRTHDAY_DATA.friendName;
+      document.getElementById('openPostalOrigin').textContent = BIRTHDAY_DATA.postalOrigin;
+
+      document.getElementById('coverDate').textContent = BIRTHDAY_DATA.birthdayDate;
+      document.getElementById('coverHeading').textContent = BIRTHDAY_DATA.cover.mainHeading;
+      document.getElementById('coverSubtitle').textContent = '“' + BIRTHDAY_DATA.cover.subtitle + '”';
+      document.getElementById('coverNote').textContent = '✍️ ' + BIRTHDAY_DATA.cover.note;
+
+      document.getElementById('letterPostal').textContent = BIRTHDAY_DATA.postalOrigin;
+      document.getElementById('letterTitle').textContent = BIRTHDAY_DATA.letter.heading;
+      if (BIRTHDAY_DATA.letter.postscript) {
+        document.getElementById('letterPostscriptContainer').innerHTML = `
+          <p class="text-[11px] sm:text-xs text-brown italic">${BIRTHDAY_DATA.letter.postscript}</p>
+        `;
+      }
+      document.getElementById('letterSignOff').textContent = BIRTHDAY_DATA.letter.signOff;
+      document.getElementById('letterSender').textContent = BIRTHDAY_DATA.senderName;
+
+      const memoryGrid = document.getElementById('memoryGrid');
+      memoryGrid.innerHTML = '';
+      BIRTHDAY_DATA.memories.forEach(mem => {
+        const item = document.createElement('div');
+        item.className = "relative bg-[#FAF5EC] border border-beige rounded-md p-2 sm:p-2.5 shadow-sm";
+        item.innerHTML = `
+          <div class="flex items-center justify-between text-[8px] font-sans uppercase tracking-widest text-brown mb-0.5">
+            <span class="font-semibold text-burgundy">${mem.tag}</span>
+            <span class="italic">${mem.date}</span>
+          </div>
+          <h4 class="text-xs sm:text-sm font-serif font-bold text-ink mb-0.5">${mem.title}</h4>
+          <p class="text-[10px] sm:text-[11px] text-[#4A3D34] leading-relaxed font-serif" style="line-height: 1.55;">${mem.story}</p>
+          <div class="mt-1.5 pt-1 border-t border-aged/60 flex items-center justify-start">
+            <span class="text-xs text-burgundy font-script">🏷️ ${mem.sticker}</span>
+          </div>
+        `;
+        memoryGrid.appendChild(item);
+      });
+
+      const appGrid = document.getElementById('appreciationGrid');
+      appGrid.innerHTML = '';
+      BIRTHDAY_DATA.appreciation.forEach((c, idx) => {
+        const cardBox = document.createElement('div');
+        cardBox.className = "card-perspective select-none";
+        cardBox.onclick = () => toggleFlip(idx);
+
+        cardBox.innerHTML = `
+          <div id="flipCard-${idx}" class="flip-inner shadow-sm hover:shadow-md">
+            <div class="flip-front bg-[#FAF5EC] border border-beige p-2 sm:p-2.5 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between mb-0.5">
+                  <span class="text-sm">${c.icon}</span>
+                  <span class="text-xs text-rose font-serif">♥</span>
+                </div>
+                <h4 class="text-xs font-sans uppercase tracking-wider font-bold text-burgundy mb-0.5">${c.title}</h4>
+                <p class="text-[9px] text-brown/70 italic font-serif">Tap to flip & read...</p>
+              </div>
+              <div class="pt-1 border-t border-aged/60 flex items-center justify-between text-[8px] text-burgundy font-sans font-semibold">
+                <span class="tracking-wider uppercase">FLIP CARD</span>
+                <span class="text-xs">↺</span>
+              </div>
+            </div>
+
+            <div class="flip-back bg-[#F6EFE3] border border-burgundy/60 p-2 sm:p-2.5 flex flex-col justify-between text-center">
+              <div>
+                <span class="text-[9px] text-burgundy">🌸 ❦ 🌸</span>
+                <p class="text-[9.5px] sm:text-[10.5px] text-ink leading-relaxed font-serif mt-0.5 italic" style="line-height: 1.45;">“${c.text}”</p>
+              </div>
+              <div class="pt-1 border-t border-beige flex items-center justify-between text-[7.5px] text-brown font-sans">
+                <span class="font-script text-burgundy text-[10px]">with all my heart</span>
+                <span>↶ FLIP BACK</span>
+              </div>
+            </div>
+          </div>
+        `;
+        appGrid.appendChild(cardBox);
+      });
+
+      document.getElementById('finalTitle1').textContent = BIRTHDAY_DATA.finalMessage.heading1;
+      document.getElementById('finalTitle2').textContent = '“' + BIRTHDAY_DATA.finalMessage.heading2 + '”';
+      const finalContainer = document.getElementById('finalParagraphsContainer');
+      finalContainer.innerHTML = '';
+      BIRTHDAY_DATA.finalMessage.paragraphs.forEach(p => {
+        const pEl = document.createElement('p');
+        pEl.textContent = p;
+        finalContainer.appendChild(pEl);
+      });
+      document.getElementById('finalSignOff').textContent = BIRTHDAY_DATA.finalMessage.signOff;
+      document.getElementById('finalSender').textContent = BIRTHDAY_DATA.senderName;
+
+      updateNavButtons();
+    }
+
+    function toggleFlip(index) {
+      const card = document.getElementById(`flipCard-${index}`);
+      if (card) card.classList.toggle('is-flipped');
+    }
+
+    function goToPage(targetPage) {
+      if (targetPage === currentPage || targetPage < 1 || targetPage > totalPages) return;
+
+      for (let i = 1; i <= totalPages; i++) {
+        const p = document.getElementById(`page-${i}`);
+        if (p) p.classList.remove('active-page');
+      }
+
+      currentPage = targetPage;
+      const targetEl = document.getElementById(`page-${currentPage}`);
+      if (targetEl) targetEl.classList.add('active-page');
+
+      updateNavButtons();
+
+      if (currentPage === 2 && !letterHasTyped) {
+        startSlowLetterTyping();
+      }
+    }
+
+    function nextPage() {
+      if (currentPage < totalPages) goToPage(currentPage + 1);
+      else goToPage(1);
+    }
+
+    function prevPage() {
+      if (currentPage > 1) goToPage(currentPage - 1);
+    }
+
+    function updateNavButtons() {
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const dotsContainer = document.getElementById('pageDots');
+
+      if (currentPage === 1) prevBtn.classList.add('opacity-0', 'pointer-events-none');
+      else prevBtn.classList.remove('opacity-0', 'pointer-events-none');
+
+      if (currentPage === totalPages) nextBtn.innerHTML = 'RESTART ↺';
+      else nextBtn.innerHTML = 'NEXT PAGE ➔';
+
+      dotsContainer.innerHTML = '';
+      for (let i = 1; i <= totalPages; i++) {
+        const dot = document.createElement('span');
+        if (i === currentPage) {
+          dot.className = "w-2.5 h-2.5 rounded-full bg-burgundy ring-2 ring-rose transition-all";
+        } else {
+          dot.className = "w-2 h-2 rounded-full bg-beige/40 cursor-pointer";
+          dot.onclick = () => goToPage(i);
+        }
+        dotsContainer.appendChild(dot);
+      }
+    }
+
+    function openGreetingCardDirectly() {
+      const flap = document.getElementById('envelopeFlap');
+      const card = document.getElementById('envelopeCard');
+      const openingScreen = document.getElementById('openingScreen');
+
+      flap.style.transform = 'rotateX(180deg)';
+      card.style.transform = 'scale(1.05)';
+
+      setTimeout(() => {
+        openingScreen.classList.add('opacity-0', 'pointer-events-none');
+        startSparkles();
+        setTimeout(() => {
+          openingScreen.classList.add('hidden');
+        }, 700);
+      }, 650);
+    }
+
+    let letterHasTyped = false;
+
+    function startSlowLetterTyping() {
+      letterHasTyped = true;
+      const container = document.getElementById('typewriterBody');
+      container.innerHTML = '';
+
+      let pIdx = 0;
+      let cIdx = 0;
+      const paragraphs = BIRTHDAY_DATA.letter.paragraphs;
+
+      function typeChar() {
+        if (pIdx >= paragraphs.length) {
+          document.getElementById('letterPostscriptContainer').style.opacity = '1';
+          document.getElementById('letterSignoffContainer').style.opacity = '1';
+          return;
+        }
+
+        const currentP = paragraphs[pIdx];
+        let pEl = document.getElementById(`letterP-${pIdx}`);
+        if (!pEl) {
+          pEl = document.createElement('p');
+          pEl.id = `letterP-${pIdx}`;
+          pEl.className = "first-letter:text-xl sm:first-letter:text-2xl first-letter:font-serif first-letter:text-burgundy";
+          container.appendChild(pEl);
+        }
+
+        if (cIdx < currentP.length) {
+          const char = currentP.charAt(cIdx);
+          cIdx++;
+
+          pEl.innerHTML = currentP.substring(0, cIdx) +
+            `<span class="inline-block text-burgundy cursor-blink font-bold ml-0.5">✍️</span>`;
+
+          let delay = 38;
+          if (char === '.' || char === '!' || char === '?') delay = 420;
+          else if (char === ',' || char === ';') delay = 200;
+
+          setTimeout(typeChar, delay);
+        } else {
+          pEl.innerHTML = currentP;
+          pIdx++;
+          cIdx = 0;
+          setTimeout(typeChar, 550);
+        }
+      }
+
+      typeChar();
+    }
+
+    let sparklesActive = false;
+    let sparkleAnimId = null;
+
+    function startSparkles() {
+      if (sparklesActive) return;
+      sparklesActive = true;
+
+      const canvas = document.getElementById('sparkleCanvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const colors = ['#F6D07A', '#E8B668', '#FFFFFF', '#C99A98', '#EADBCE'];
+      const particles = [];
+      const count = 55;
+
+      for (let i = 0; i < count; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vy: Math.random() * 1.2 + 0.5,
+          vx: (Math.random() - 0.5) * 0.6,
+          size: Math.random() * 3 + 1.5,
+          color: colors[Math.floor(Math.random() * colors.length)],
+          alpha: Math.random(),
+          twinkleSpeed: Math.random() * 0.04 + 0.02,
+          isStar: Math.random() > 0.4
+        });
+      }
+
+      function drawStar(cx, cy, spikes, outerRadius, innerRadius, color, alpha) {
+        let rot = (Math.PI / 2) * 3;
+        let x = cx;
+        let y = cy;
+        const step = Math.PI / spikes;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - outerRadius);
+        for (let i = 0; i < spikes; i++) {
+          x = cx + Math.cos(rot) * outerRadius;
+          y = cy + Math.sin(rot) * outerRadius;
+          ctx.lineTo(x, y);
+          rot += step;
+
+          x = cx + Math.cos(rot) * innerRadius;
+          y = cy + Math.sin(rot) * innerRadius;
+          ctx.lineTo(x, y);
+          rot += step;
+        }
+        ctx.lineTo(cx, cy - outerRadius);
+        ctx.closePath();
+        ctx.fillStyle = color;
+        ctx.globalAlpha = alpha;
+        ctx.fill();
+        ctx.restore();
+      }
+
+      function animate() {
+        if (!sparklesActive) return;
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach(p => {
+          p.y += p.vy;
+          p.x += p.vx;
+          p.alpha += p.twinkleSpeed;
+
+          if (p.y > canvas.height + 10) {
+            p.y = -10;
+            p.x = Math.random() * canvas.width;
+          }
+          if (p.x < 0) p.x = canvas.width;
+          if (p.x > canvas.width) p.x = 0;
+
+          const currentAlpha = Math.abs(Math.sin(p.alpha));
+
+          if (p.isStar) {
+            drawStar(p.x, p.y, 4, p.size * 1.6, p.size * 0.45, p.color, currentAlpha);
+          } else {
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fillStyle = p.color;
+            ctx.globalAlpha = currentAlpha * 0.75;
+            ctx.shadowBlur = 5;
+            ctx.shadowColor = p.color;
+            ctx.fill();
+            ctx.restore();
+          }
+        });
+
+        sparkleAnimId = requestAnimationFrame(animate);
+      }
+
+      animate();
+    }
+
+    window.addEventListener('resize', () => {
+      const canvas = document.getElementById('sparkleCanvas');
+      if (canvas) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', initGreetingCard);
+  </script>
+</body>
+</html>
