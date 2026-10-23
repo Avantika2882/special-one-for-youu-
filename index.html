@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <!-- Android & Mobile Viewport Perfection -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
   <title>A Letter For Ckayyyyy 💌</title>
 
@@ -57,7 +58,11 @@
       height: auto !important;
       min-height: 0 !important;
       display: flow-root;
+      perspective: 1600px;
+      -webkit-perspective: 1600px;
     }
+
+    /* Strict Zero-Height Rule for Inactive Pages */
     .card-page {
       display: none !important;
       opacity: 0 !important;
@@ -77,18 +82,64 @@
       overflow: visible !important;
       visibility: visible !important;
       pointer-events: auto !important;
-      animation: pageFadeIn 0.22s ease-out forwards;
     }
-    @keyframes pageFadeIn {
-      from { opacity: 0; transform: translateY(3px); }
-      to { opacity: 1; transform: translateY(0); }
+
+    /* Silky Smooth 3D Page Turn Animation */
+    .page-turn-forward {
+      animation: pageTurnForward 0.52s cubic-bezier(0.32, 0, 0.24, 1) forwards;
+      transform-origin: left center;
     }
+    .page-turn-backward {
+      animation: pageTurnBackward 0.52s cubic-bezier(0.32, 0, 0.24, 1) forwards;
+      transform-origin: right center;
+    }
+    .page-turn-in {
+      animation: pageTurnIn 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      transform-origin: right center;
+    }
+    .page-turn-in-reverse {
+      animation: pageTurnInReverse 0.52s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      transform-origin: left center;
+    }
+
+    @keyframes pageTurnForward {
+      0% { transform: rotateY(0deg); opacity: 1; filter: brightness(1); }
+      50% { filter: brightness(0.9); }
+      100% { transform: rotateY(-85deg) scale(0.96); opacity: 0; filter: brightness(0.85); }
+    }
+    @keyframes pageTurnBackward {
+      0% { transform: rotateY(0deg); opacity: 1; filter: brightness(1); }
+      50% { filter: brightness(0.9); }
+      100% { transform: rotateY(85deg) scale(0.96); opacity: 0; filter: brightness(0.85); }
+    }
+    @keyframes pageTurnIn {
+      0% { transform: rotateY(75deg) scale(0.96); opacity: 0; filter: brightness(0.85); }
+      50% { filter: brightness(0.95); }
+      100% { transform: rotateY(0deg) scale(1); opacity: 1; filter: brightness(1); }
+    }
+    @keyframes pageTurnInReverse {
+      0% { transform: rotateY(-75deg) scale(0.96); opacity: 0; filter: brightness(0.85); }
+      50% { filter: brightness(0.95); }
+      100% { transform: rotateY(0deg) scale(1); opacity: 1; filter: brightness(1); }
+    }
+
+    /* Staggered Memory Card Reveal Animation (Pieces of Our World) */
+    .memory-card-appear {
+      animation: memoryCardIn 0.55s cubic-bezier(0.25, 1, 0.5, 1) both;
+    }
+    @keyframes memoryCardIn {
+      0% { opacity: 0; transform: translateY(18px) scale(0.95); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
       20%, 60% { transform: translateX(-6px); }
       40%, 80% { transform: translateX(6px); }
     }
     .shake-anim { animation: shake 0.4s ease-in-out; }
+
+    /* 3D Flip Card Physics (Appreciation Section) */
     .card-perspective { perspective: 1000px; -webkit-perspective: 1000px; }
     .flip-inner {
       position: relative;
@@ -111,6 +162,7 @@
       transform: translate3d(0, 0, 0);
     }
     .flip-back { transform: rotateY(180deg) translate3d(0, 0, 0); -webkit-transform: rotateY(180deg) translate3d(0, 0, 0); }
+
     @keyframes blinkCursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     .cursor-blink { animation: blinkCursor 0.85s infinite; }
   </style>
@@ -121,7 +173,7 @@
   <canvas id="sparkleCanvas" class="fixed inset-0 pointer-events-none z-50 w-full h-full"></canvas>
 
   <!-- ====================================================================
-       STAGE 1: THE SEALED VINTAGE ENVELOPE WITH PASSCODE LOCK
+       STAGE 1: 100% SEALED VINTAGE ENVELOPE (ZERO PREMATURE VISIBILITY)
        ==================================================================== -->
   <div id="openingScreen" class="fixed inset-0 z-50 flex flex-col items-center justify-center p-4 bg-[#241B17] transition-all duration-700">
     <div id="envelopeStage" class="max-w-md w-full text-center flex flex-col items-center transition-all duration-500">
@@ -134,18 +186,33 @@
         </h2>
       </div>
 
-      <!-- Tactile Envelope Card -->
-      <div id="envelopeCard" onclick="focusPasscode()" class="group relative w-72 sm:w-80 h-44 sm:h-48 bg-aged rounded-md shadow-2xl border border-beige cursor-pointer my-3 transition-all duration-700 transform hover:-translate-y-1 active:scale-95">
-        <div class="absolute inset-0 rounded-md overflow-hidden" style="background: linear-gradient(135deg, #EADBCE 0%, #D8C3A8 50%, #EADBCE 100%)">
-          <div id="envelopeFlap" class="absolute top-0 left-0 right-0 h-24 sm:h-28 bg-[#DFD1B9] border-b border-[#C8B395] transition-transform duration-700 origin-top shadow-sm" style="clip-path: polygon(0 0, 100% 0, 50% 100%);"></div>
+      <!-- Completely Sealed Envelope (Letter is 100% hidden until opened) -->
+      <div id="envelopeCard" onclick="focusPasscode()" class="group relative w-72 sm:w-80 h-44 sm:h-48 bg-[#D8C3A8] rounded-md shadow-2xl cursor-pointer my-3 transition-all duration-700 select-none">
+        
+        <!-- Interior Back of Envelope -->
+        <div class="absolute inset-0 bg-[#C4AD91] rounded-md"></div>
+
+        <!-- The Letter Tucked Inside: Strictly hidden (display: none) while sealed -->
+        <div id="tuckedLetter" class="hidden absolute left-3 right-3 top-4 h-36 bg-[#FAF5EC] rounded border border-beige p-3 shadow-md pointer-events-none" style="z-index: 2;">
+          <div class="flex items-center justify-between border-b border-beige/60 pb-1 mb-1.5">
+            <span class="text-[7px] font-sans uppercase tracking-widest text-burgundy font-bold">AIR MAIL</span>
+            <span class="text-[9px] text-burgundy">🌸</span>
+          </div>
+          <p class="text-[9px] text-brown font-serif italic text-left">For my favourite human...</p>
+        </div>
+
+        <!-- Front Envelope Pocket (Overlaps flap seam completely) -->
+        <div class="absolute inset-0 pointer-events-none rounded-md overflow-hidden" style="z-index: 3;">
+          <div class="absolute inset-0" style="background: linear-gradient(135deg, #EADBCE 0%, #D8C3A8 50%, #EADBCE 100%); clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 0, 50% 50%);"></div>
+          <div class="absolute bottom-0 left-0 right-0 h-28" style="background: linear-gradient(to top, #DEC7AD, #EADBCE); clip-path: polygon(0 100%, 50% 20%, 100% 100%);"></div>
 
           <!-- Postage Stamp -->
-          <div class="absolute top-2.5 right-3.5 transform rotate-3">
+          <div class="absolute top-7 right-3 transform rotate-3">
             <div class="p-0.5 bg-ivory border border-beige shadow-sm rounded-sm">
-              <div class="w-11 h-13 border-2 border-dashed border-burgundy p-0.5 flex flex-col justify-between items-center text-center">
-                <span class="text-[6px] uppercase tracking-widest text-brown">SPECIAL</span>
+              <div class="w-10 h-12 border-2 border-dashed border-burgundy p-0.5 flex flex-col justify-between items-center text-center">
+                <span class="text-[5px] uppercase tracking-widest text-brown">SPECIAL</span>
                 <span class="text-xs text-burgundy">🌸</span>
-                <span class="text-[6px] tracking-wider uppercase font-bold text-ink">AIR MAIL</span>
+                <span class="text-[5px] tracking-wider uppercase font-bold text-ink">AIR MAIL</span>
               </div>
             </div>
           </div>
@@ -154,24 +221,26 @@
           <div class="absolute bottom-3 left-4 text-left">
             <p class="text-[8px] font-sans tracking-widest text-brown uppercase">FOR:</p>
             <p id="openFriendName" class="text-xl sm:text-2xl text-ink font-bold tracking-wide font-script"></p>
-            <p id="openPostalOrigin" class="text-[8px] text-brown italic"></p>
           </div>
+        </div>
 
-          <!-- Center Wax Seal Button -->
-          <div id="openWaxSeal" class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10 transition-transform duration-500">
-            <svg width="60" height="60" viewBox="0 0 100 100" class="drop-shadow-lg">
-              <defs>
-                <radialGradient id="waxGradMain" cx="35%" cy="35%" r="65%">
-                  <stop offset="0%" stop-color="#FFF" stop-opacity="0.35"/>
-                  <stop offset="50%" stop-color="#783F46"/>
-                  <stop offset="100%" stop-color="#251214" stop-opacity="0.85"/>
-                </radialGradient>
-              </defs>
-              <path d="M50 8 C62 7, 72 13, 80 20 C90 30, 94 42, 92 56 C90 70, 80 82, 68 89 C55 96, 40 94, 28 88 C16 82, 8 70, 8 55 C7 40, 15 26, 26 17 C34 11, 42 8, 50 8 Z" fill="url(#waxGradMain)"/>
-              <circle cx="50" cy="52" r="26" fill="none" stroke="#F6F0E4" stroke-opacity="0.45" stroke-width="2" stroke-dasharray="4 2"/>
-              <text x="50" y="58" text-anchor="middle" fill="#F6F0E4" font-size="20" font-family="serif" font-weight="bold">♥</text>
-            </svg>
-          </div>
+        <!-- Top Triangular Flap (When closed, covers down past the pocket seam) -->
+        <div id="envelopeFlap" class="absolute top-0 left-0 right-0 h-28 bg-[#DFD1B9] border-b border-[#C8B395] transition-transform duration-700 origin-top shadow-md" style="clip-path: polygon(0 0, 100% 0, 50% 100%); z-index: 4;"></div>
+
+        <!-- Center Wax Seal Button -->
+        <div id="openWaxSeal" class="absolute top-[48%] left-1/2 -translate-x-1/2 -translate-y-1/2 transition-transform duration-500" style="z-index: 5;">
+          <svg width="60" height="60" viewBox="0 0 100 100" class="drop-shadow-lg">
+            <defs>
+              <radialGradient id="waxGradMain" cx="35%" cy="35%" r="65%">
+                <stop offset="0%" stop-color="#FFF" stop-opacity="0.35"/>
+                <stop offset="50%" stop-color="#783F46"/>
+                <stop offset="100%" stop-color="#251214" stop-opacity="0.85"/>
+              </radialGradient>
+            </defs>
+            <path d="M50 8 C62 7, 72 13, 80 20 C90 30, 94 42, 92 56 C90 70, 80 82, 68 89 C55 96, 40 94, 28 88 C16 82, 8 70, 8 55 C7 40, 15 26, 26 17 C34 11, 42 8, 50 8 Z" fill="url(#waxGradMain)"/>
+            <circle cx="50" cy="52" r="26" fill="none" stroke="#F6F0E4" stroke-opacity="0.45" stroke-width="2" stroke-dasharray="4 2"/>
+            <text x="50" y="58" text-anchor="middle" fill="#F6F0E4" font-size="20" font-family="serif" font-weight="bold">♥</text>
+          </svg>
         </div>
       </div>
 
@@ -189,17 +258,14 @@
           />
         </div>
 
-        <!-- Wrong code alert -->
         <p id="passcodeError" class="hidden text-xs text-rose font-sans font-semibold mt-1">
           Do not open the letter, it's not for you! 🚫
         </p>
 
-        <!-- Pretty Success Message when he enters correct passcode -->
         <p id="passcodeSuccess" class="hidden text-xs text-[#F6D07A] font-sans font-semibold mt-1 animate-pulse">
           ✨ Unlocked with love! Opening just for you, my love... 💗
         </p>
 
-        <!-- Hint with laughing and heart emoji -->
         <p class="text-[11px] text-beige/90 italic font-serif mt-1.5 text-center leading-tight">
           💡 <span class="text-rose font-semibold not-italic">Hint:</span> "I remember the date" 😂💗
         </p>
@@ -212,15 +278,15 @@
   </div>
 
   <!-- ====================================================================
-       STAGE 2: SNUG EXACT-FITTING GREETING CARD (NO DEAD SPACE)
+       STAGE 2: SNUG GREETING CARD (SMOOTH PAGE TURNING & SWIPE)
        ==================================================================== -->
   <main class="w-full max-w-[95vw] sm:max-w-xl md:max-w-2xl mx-auto my-auto py-1">
 
-    <div id="greetingCardBox" class="greeting-card-frame relative bg-ivory rounded-xl border-2 border-beige p-3.5 sm:p-5 transition-all">
+    <div id="greetingCardBox" class="greeting-card-frame relative bg-ivory rounded-xl border-2 border-beige p-3.5 sm:p-5 transition-all select-none">
       <div class="hidden sm:block absolute top-0 bottom-0 left-1/2 -translate-x-1/2 w-[1px] bg-gradient-to-b from-transparent via-beige/70 to-transparent pointer-events-none"></div>
       <div class="absolute inset-1.5 sm:inset-2 border border-[#E2D2BC] rounded-lg pointer-events-none"></div>
 
-      <!-- PAGE 1: COVER -->
+      <!-- PAGE 1: COVER (NO "NEXT PAGE" BUTTON IN BOTTOM RIBBON) -->
       <div id="page-1" class="card-page active-page text-center py-1">
         <div class="inline-flex items-center gap-1.5 select-none opacity-70 transform -rotate-3 mb-1">
           <div class="w-8 h-8 rounded-full border border-dashed border-burgundy flex flex-col items-center justify-center text-[6px] font-serif text-burgundy">
@@ -248,7 +314,7 @@
         </div>
 
         <div>
-          <button onclick="goToPage(2)" class="px-6 py-2.5 bg-burgundy hover:bg-[#623238] text-ivory rounded-full text-xs font-sans tracking-[0.2em] uppercase font-semibold shadow-md transition-all transform active:scale-95 inline-flex items-center gap-1.5">
+          <button onclick="nextPage()" class="px-6 py-2.5 bg-burgundy hover:bg-[#623238] text-ivory rounded-full text-xs font-sans tracking-[0.2em] uppercase font-semibold shadow-md transition-all transform active:scale-95 inline-flex items-center gap-1.5">
             OPEN CARD & READ ➔
           </button>
         </div>
@@ -256,8 +322,7 @@
 
       <!-- PAGE 2: THE HANDWRITTEN LETTER -->
       <div id="page-2" class="card-page py-0.5">
-        <div class="flex items-center justify-between border-b border-beige/60 pb-1 mb-2.5">
-          <span id="letterPostal" class="text-[9px] sm:text-[10px] text-brown uppercase tracking-widest font-sans"></span>
+        <div class="flex items-center justify-end border-b border-beige/60 pb-1 mb-2.5">
           <span class="text-xs text-burgundy font-serif font-bold">♥ № 1</span>
         </div>
 
@@ -265,19 +330,17 @@
 
         <div id="typewriterBody" class="space-y-2.5 text-ink leading-relaxed text-[13.5px] sm:text-[14.5px] font-serif" style="line-height: 1.75;"></div>
 
-        <div id="letterPostscriptContainer" class="mt-3 pt-2 border-t border-beige/70 opacity-0 transition-opacity duration-700"></div>
-
-        <div id="letterSignoffContainer" class="mt-2.5 pt-0.5 flex flex-col items-end text-right opacity-0 transition-opacity duration-700">
+        <!-- Handwritten Sign-off (Page 1 / Letter: Your Wifeyyy 😘) -->
+        <div id="letterSignoffContainer" class="mt-3 pt-1 flex flex-col items-end text-right opacity-0 transition-opacity duration-700">
           <span id="letterSignOff" class="text-[10px] font-sans tracking-wider text-brown uppercase"></span>
           <p id="letterSender" class="text-2xl sm:text-3xl text-burgundy font-bold mt-0.5 tracking-wide font-script"></p>
         </div>
       </div>
 
-      <!-- PAGE 3: PIECES OF OUR LITTLE WORLD -->
+      <!-- PAGE 3: PIECES OF OUR LITTLE WORLD (STAGGERED FLASH CARDS) -->
       <div id="page-3" class="card-page py-0.5">
         <div class="text-center mb-2.5">
           <h2 class="text-lg sm:text-xl text-ink font-serif">Pieces of Our Little World</h2>
-          <p class="text-[10px] text-brown italic mt-0.5">Keepsake notes and stories written in gold.</p>
         </div>
         <div id="memoryGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-2.5"></div>
       </div>
@@ -286,7 +349,6 @@
       <div id="page-4" class="card-page py-0.5">
         <div class="text-center mb-2">
           <h2 class="text-lg sm:text-xl text-ink font-serif">If You Ever Wonder Why You Matter</h2>
-          <p class="text-[10px] text-brown italic mt-0.5">Tap each card to flip and unveil the note.</p>
         </div>
         <div id="appreciationGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
       </div>
@@ -316,14 +378,14 @@
         </div>
 
         <div class="mt-3.5 mb-0.5">
-          <button onclick="goToPage(1)" class="px-4 py-1.5 bg-[#FAF5EC] hover:bg-aged text-brown border border-beige rounded-full text-[11px] font-sans tracking-[0.2em] uppercase font-semibold transition-all transform active:scale-95 inline-flex items-center gap-1.5">
+          <button onclick="goToPage(1, false)" class="px-4 py-1.5 bg-[#FAF5EC] hover:bg-aged text-brown border border-beige rounded-full text-[11px] font-sans tracking-[0.2em] uppercase font-semibold transition-all transform active:scale-95 inline-flex items-center gap-1.5">
             ↑ RETURN TO COVER
           </button>
         </div>
       </div>
     </div>
 
-    <!-- NAVIGATION RIBBON -->
+    <!-- NAVIGATION RIBBON (NO "NEXT PAGE" ON PAGE 1) -->
     <div class="mt-2 flex items-center justify-between px-1 text-xs font-sans text-rose select-none">
       <button id="prevBtn" onclick="prevPage()" class="opacity-0 pointer-events-none px-3 py-1 rounded-full bg-[#3B2E27] hover:bg-[#4D3D34] text-ivory tracking-widest uppercase transition-all flex items-center gap-1 active:scale-95 text-[10px]">
         ↶ PREVIOUS
@@ -331,7 +393,7 @@
 
       <div id="pageDots" class="flex items-center gap-1 text-beige"></div>
 
-      <button id="nextBtn" onclick="nextPage()" class="px-3 py-1 rounded-full bg-burgundy hover:bg-[#623238] text-ivory tracking-widest uppercase font-semibold transition-all flex items-center gap-1 active:scale-95 shadow-md text-[10px]">
+      <button id="nextBtn" onclick="nextPage()" class="opacity-0 pointer-events-none px-3 py-1 rounded-full bg-burgundy hover:bg-[#623238] text-ivory tracking-widest uppercase font-semibold transition-all flex items-center gap-1 active:scale-95 shadow-md text-[10px]">
         NEXT PAGE ➔
       </button>
     </div>
@@ -345,8 +407,8 @@
       friendName: "Ckayyyy 💗",
       friendNickname: "My Dearest Lovee",
       senderName: "Your Pooonaaaa 😺",
+      letterSignoffSender: "Your Wifeyyy 😘",
       birthdayDate: "October 24th",
-      postalOrigin: "Sent with all my love • Air Mail",
 
       cover: {
         mainHeading: "HAPPIEST BIRTHDAY, MY FAVOURITE HUMAN",
@@ -362,7 +424,6 @@
           "Thank you for being my constant, for listening without judgment, for celebrating every little victory with me, and for standing beside me during the hard days. Life is so much better with a person like youuu in itttt 🤗🤗.",
           "Mayyy this year brings all the happiness you wished for and get rid of all yourr sorrows and pain🧿💫... Even when life gets hard... Remember youuu always have your beautiful wifeee with youuu 😉✨️"
         ],
-        postscript: "P.S. I hope today treats you like the royalty you are.",
         signOff: "With all my love,"
       },
 
@@ -426,13 +487,13 @@
         paragraphs: [
           "Let's cherish everyyy moment we share togetherrr and be there for eachotherrr ALWAYSSS!!! There is no leaving for both of us and we are going to choose us everytime 😌✨️✨️",
           "Thank you for walking beside me through every chapter. Cheers to moreee memories unforgettable together... I just want to say one thing before finishing this... I LOVEEEE YOUUUU CKAAAYYYY 💞😽✨️",
-          "HAPPY BIRTHDAY, MY SWEET HEART <333."
+          "HAPPY BIRTHDAY, MY SWEET HEART <3333."
         ],
         signOff: "Forever grateful for you,"
       }
     };
 
-    /* Passcode Lock (Updated to 0808) */
+    /* Passcode Lock (0808) */
     const SECRET_PASSCODE = "0808";
 
     function focusPasscode() {
@@ -454,7 +515,7 @@
         
         setTimeout(() => {
           openGreetingCardDirectly();
-        }, 900);
+        }, 850);
       } else {
         if (successMsg) successMsg.classList.add('hidden');
         errorMsg.classList.remove('hidden');
@@ -482,47 +543,24 @@
       }
     });
 
-    /* Navigation */
+    /* Navigation & Page Turning Animations */
     let currentPage = 1;
     const totalPages = 5;
+    let isFlipping = false;
 
     function initGreetingCard() {
       document.getElementById('openFriendName').textContent = BIRTHDAY_DATA.friendName;
-      document.getElementById('openPostalOrigin').textContent = BIRTHDAY_DATA.postalOrigin;
 
       document.getElementById('coverDate').textContent = BIRTHDAY_DATA.birthdayDate;
       document.getElementById('coverHeading').textContent = BIRTHDAY_DATA.cover.mainHeading;
       document.getElementById('coverSubtitle').textContent = '“' + BIRTHDAY_DATA.cover.subtitle + '”';
       document.getElementById('coverNote').textContent = '✍️ ' + BIRTHDAY_DATA.cover.note;
 
-      document.getElementById('letterPostal').textContent = BIRTHDAY_DATA.postalOrigin;
       document.getElementById('letterTitle').textContent = BIRTHDAY_DATA.letter.heading;
-      if (BIRTHDAY_DATA.letter.postscript) {
-        document.getElementById('letterPostscriptContainer').innerHTML = `
-          <p class="text-[11px] sm:text-xs text-brown italic">${BIRTHDAY_DATA.letter.postscript}</p>
-        `;
-      }
       document.getElementById('letterSignOff').textContent = BIRTHDAY_DATA.letter.signOff;
-      document.getElementById('letterSender').textContent = BIRTHDAY_DATA.senderName;
+      document.getElementById('letterSender').textContent = BIRTHDAY_DATA.letterSignoffSender;
 
-      const memoryGrid = document.getElementById('memoryGrid');
-      memoryGrid.innerHTML = '';
-      BIRTHDAY_DATA.memories.forEach(mem => {
-        const item = document.createElement('div');
-        item.className = "relative bg-[#FAF5EC] border border-beige rounded-md p-2 sm:p-2.5 shadow-sm";
-        item.innerHTML = `
-          <div class="flex items-center justify-between text-[8px] font-sans uppercase tracking-widest text-brown mb-0.5">
-            <span class="font-semibold text-burgundy">${mem.tag}</span>
-            <span class="italic">${mem.date}</span>
-          </div>
-          <h4 class="text-xs sm:text-sm font-serif font-bold text-ink mb-0.5">${mem.title}</h4>
-          <p class="text-[10px] sm:text-[11px] text-[#4A3D34] leading-relaxed font-serif" style="line-height: 1.55;">${mem.story}</p>
-          <div class="mt-1.5 pt-1 border-t border-aged/60 flex items-center justify-start">
-            <span class="text-xs text-burgundy font-script">🏷️ ${mem.sticker}</span>
-          </div>
-        `;
-        memoryGrid.appendChild(item);
-      });
+      renderMemories();
 
       const appGrid = document.getElementById('appreciationGrid');
       appGrid.innerHTML = '';
@@ -576,6 +614,29 @@
       document.getElementById('finalSender').textContent = BIRTHDAY_DATA.senderName;
 
       updateNavButtons();
+      setupSwipeGestures();
+    }
+
+    function renderMemories() {
+      const memoryGrid = document.getElementById('memoryGrid');
+      memoryGrid.innerHTML = '';
+      BIRTHDAY_DATA.memories.forEach((mem, index) => {
+        const item = document.createElement('div');
+        item.className = "memory-card-appear relative bg-[#FAF5EC] border border-beige rounded-md p-2 sm:p-2.5 shadow-sm";
+        item.style.animationDelay = `${0.08 + index * 0.14}s`;
+        item.innerHTML = `
+          <div class="flex items-center justify-between text-[8px] font-sans uppercase tracking-widest text-brown mb-0.5">
+            <span class="font-semibold text-burgundy">${mem.tag}</span>
+            <span class="italic">${mem.date}</span>
+          </div>
+          <h4 class="text-xs sm:text-sm font-serif font-bold text-ink mb-0.5">${mem.title}</h4>
+          <p class="text-[10px] sm:text-[11px] text-[#4A3D34] leading-relaxed font-serif" style="line-height: 1.55;">${mem.story}</p>
+          <div class="mt-1.5 pt-1 border-t border-aged/60 flex items-center justify-start">
+            <span class="text-xs text-burgundy font-script">🏷️ ${mem.sticker}</span>
+          </div>
+        `;
+        memoryGrid.appendChild(item);
+      });
     }
 
     function toggleFlip(index) {
@@ -583,32 +644,46 @@
       if (card) card.classList.toggle('is-flipped');
     }
 
-    function goToPage(targetPage) {
-      if (targetPage === currentPage || targetPage < 1 || targetPage > totalPages) return;
+    /* Animative Page Flipping */
+    function goToPage(targetPage, forward = true) {
+      if (isFlipping || targetPage === currentPage || targetPage < 1 || targetPage > totalPages) return;
+      isFlipping = true;
 
-      for (let i = 1; i <= totalPages; i++) {
-        const p = document.getElementById(`page-${i}`);
-        if (p) p.classList.remove('active-page');
-      }
+      const currentEl = document.getElementById(`page-${currentPage}`);
+      const targetEl = document.getElementById(`page-${targetPage}`);
 
-      currentPage = targetPage;
-      const targetEl = document.getElementById(`page-${currentPage}`);
-      if (targetEl) targetEl.classList.add('active-page');
+      currentEl.classList.remove('page-turn-in', 'page-turn-in-reverse');
+      currentEl.classList.add(forward ? 'page-turn-forward' : 'page-turn-backward');
 
-      updateNavButtons();
+      setTimeout(() => {
+        for (let i = 1; i <= totalPages; i++) {
+          const p = document.getElementById(`page-${i}`);
+          if (p) p.classList.remove('active-page', 'page-turn-forward', 'page-turn-backward');
+        }
 
-      if (currentPage === 2 && !letterHasTyped) {
-        startSlowLetterTyping();
-      }
+        currentPage = targetPage;
+        targetEl.classList.add('active-page', forward ? 'page-turn-in' : 'page-turn-in-reverse');
+        
+        updateNavButtons();
+        isFlipping = false;
+
+        if (currentPage === 2 && !letterHasTyped) {
+          startSlowLetterTyping();
+        }
+
+        if (currentPage === 3) {
+          renderMemories();
+        }
+      }, 380);
     }
 
     function nextPage() {
-      if (currentPage < totalPages) goToPage(currentPage + 1);
-      else goToPage(1);
+      if (currentPage < totalPages) goToPage(currentPage + 1, true);
+      else goToPage(1, false);
     }
 
     function prevPage() {
-      if (currentPage > 1) goToPage(currentPage - 1);
+      if (currentPage > 1) goToPage(currentPage - 1, false);
     }
 
     function updateNavButtons() {
@@ -616,11 +691,20 @@
       const nextBtn = document.getElementById('nextBtn');
       const dotsContainer = document.getElementById('pageDots');
 
-      if (currentPage === 1) prevBtn.classList.add('opacity-0', 'pointer-events-none');
-      else prevBtn.classList.remove('opacity-0', 'pointer-events-none');
+      // On Page 1 (The Cover with Par Avion), hide BOTH Prev and Next in the ribbon
+      if (currentPage === 1) {
+        prevBtn.classList.add('opacity-0', 'pointer-events-none');
+        nextBtn.classList.add('opacity-0', 'pointer-events-none');
+      } else {
+        prevBtn.classList.remove('opacity-0', 'pointer-events-none');
+        nextBtn.classList.remove('opacity-0', 'pointer-events-none');
+      }
 
-      if (currentPage === totalPages) nextBtn.innerHTML = 'RESTART ↺';
-      else nextBtn.innerHTML = 'NEXT PAGE ➔';
+      if (currentPage === totalPages) {
+        nextBtn.innerHTML = 'RESTART ↺';
+      } else {
+        nextBtn.innerHTML = 'NEXT PAGE ➔';
+      }
 
       dotsContainer.innerHTML = '';
       for (let i = 1; i <= totalPages; i++) {
@@ -629,27 +713,74 @@
           dot.className = "w-2.5 h-2.5 rounded-full bg-burgundy ring-2 ring-rose transition-all";
         } else {
           dot.className = "w-2 h-2 rounded-full bg-beige/40 cursor-pointer";
-          dot.onclick = () => goToPage(i);
+          dot.onclick = () => goToPage(i, i > currentPage);
         }
         dotsContainer.appendChild(dot);
       }
     }
 
+    /* Swipe Gestures (Touch Swipe Left/Right to turn pages) */
+    function setupSwipeGestures() {
+      const cardBox = document.getElementById('greetingCardBox');
+      if (!cardBox) return;
+
+      let touchStartX = 0;
+      let touchStartY = 0;
+      let touchStartTime = 0;
+
+      cardBox.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].clientX;
+        touchStartY = e.changedTouches[0].clientY;
+        touchStartTime = Date.now();
+      }, { passive: true });
+
+      cardBox.addEventListener('touchend', (e) => {
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+        const deltaX = touchEndX - touchStartX;
+        const deltaY = touchEndY - touchStartY;
+        const elapsedTime = Date.now() - touchStartTime;
+
+        if (elapsedTime < 750 && Math.abs(deltaX) > 42 && Math.abs(deltaX) > Math.abs(deltaY) * 1.35) {
+          if (deltaX < 0) {
+            nextPage(); // Swipe Left -> Next Page
+          } else {
+            prevPage(); // Swipe Right -> Prev Page
+          }
+        }
+      }, { passive: true });
+    }
+
+    /* Realistic Envelope Opening & Card Extraction */
     function openGreetingCardDirectly() {
       const flap = document.getElementById('envelopeFlap');
-      const card = document.getElementById('envelopeCard');
+      const tuckedLetter = document.getElementById('tuckedLetter');
+      const waxSeal = document.getElementById('openWaxSeal');
       const openingScreen = document.getElementById('openingScreen');
 
-      flap.style.transform = 'rotateX(180deg)';
-      card.style.transform = 'scale(1.05)';
+      // 1. Seal lifts
+      waxSeal.style.transform = 'translate(-50%, -50%) scale(1.1) rotate(6deg)';
+      
+      // 2. Flap unfolds upward in 3D
+      setTimeout(() => {
+        flap.style.transform = 'rotateX(180deg)';
+      }, 120);
 
+      // 3. Make letter visible & slide it physically UP out of the envelope pocket
+      setTimeout(() => {
+        tuckedLetter.classList.remove('hidden');
+        tuckedLetter.style.transition = 'transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1)';
+        tuckedLetter.style.transform = 'translateY(-75px) scale(1.02)';
+      }, 350);
+
+      // 4. Smooth dissolve into greeting card
       setTimeout(() => {
         openingScreen.classList.add('opacity-0', 'pointer-events-none');
         startSparkles();
         setTimeout(() => {
           openingScreen.classList.add('hidden');
         }, 700);
-      }, 650);
+      }, 1100);
     }
 
     let letterHasTyped = false;
@@ -665,7 +796,6 @@
 
       function typeChar() {
         if (pIdx >= paragraphs.length) {
-          document.getElementById('letterPostscriptContainer').style.opacity = '1';
           document.getElementById('letterSignoffContainer').style.opacity = '1';
           return;
         }
@@ -702,6 +832,7 @@
       typeChar();
     }
 
+    /* Falling Sparkles Engine */
     let sparklesActive = false;
     let sparkleAnimId = null;
 
